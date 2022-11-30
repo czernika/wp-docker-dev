@@ -4,9 +4,9 @@
 
 ## Introduction
 
-This package provides simple Docker environment for WordPress development - just fill some variables, up Docker container and you're done! It uses built-in PHP web server and MySQL connection with no fancy configs yet still customizable. By default it works with [Bedrock](https://docs.roots.io/bedrock/master/installation/) site structure
+This package provides simple Docker compose environment for WordPress development - just fill in some variables, [start Docker containers](https://docs.docker.com/engine/reference/commandline/compose_up/) with `docker compose up` and you're done! It uses built-in PHP web server and MySQL connection with no fancy configs yet still customizable. By default it works with [Bedrock](https://docs.roots.io/bedrock/master/installation/) site structure
 
-# Content
+## Content
 
 - [WP-Cli](https://wp-cli.org/)
 - PHP 8.0
@@ -17,6 +17,13 @@ This package provides simple Docker environment for WordPress development - just
 ## Configuration
 
 Fill variables in `.env` file (same meaning as [for Bedrock](https://docs.roots.io/bedrock/master/installation/#getting-started))
+
+- `DB_NAME` - Database name **(required)**
+- `DB_USER` - Database user **(required)**
+- `DB_PASSWORD` - Database password **(required)**
+- `DB_HOST` - Database host
+- `DB_PREFIX` - Database prefix
+- `WP_HOME` - Full WordPress site home URL **(required)**
 
 There are few more required within `docker-compose.yml` file
 
@@ -46,15 +53,14 @@ app:
 
 Here within `environment` section you should fill some variables
 
-- `APP_URL` - full WordPress site home URL. Should have same value as `WP_HOME` within `.env` file
+- `APP_URL` - Should have same value as `WP_HOME` within `.env` file as it has same meaning **(required)**
 
 `APP_URL` should point on localhost in `/etc/hosts` file
 
-
 User settings:
 
-- `APP_ADMIN_USER` - admin user name
-- `APP_ADMIN_EMAIL` - admin user email
+- `APP_ADMIN_USER` - Admin user name **(required)**
+- `APP_ADMIN_EMAIL` - Admin user email **(required)**
 
 These both variables required to create admin user during first run. User password will be generated automatically and stored within `admin-pass.txt` file
 
@@ -62,8 +68,8 @@ These both variables required to create admin user during first run. User passwo
 
 There are also two optional variables
 
-- `APP_TITLE` - website title - same as `get_bloginfo('name')`. Defaulted to "WordPress"
-- `APP_LOCALE` - installation locale. Default is `en_US`
+- `APP_TITLE` - Website title - same as `get_bloginfo('name')`. Defaulted to "WordPress"
+- `APP_LOCALE` - Installation locale. Default is "en_US"
 
 You may notice `WP_CLI_PACKAGES_DIR` variable with predefined value - it sets Wp-Cli packages directory where all [packages will be installed](https://make.wordpress.org/cli/handbook/guides/sharing-wp-cli-packages/#wp_cli_packages_dir-environment-variable). It allows you to keep wp cli packages persistent and not to loose them on a next run
 
@@ -84,19 +90,25 @@ docker exec -it kawa composer require <vendor/package>
 docker exec -it kawa bash
 ```
 
-Note: if you wish to enter MySQL shell use another container name - `kawa-db`
+**Note:** if you wish to enter MySQL shell use another container name - `kawa-db`
 
 ```sh
 # Enter MySQL shell
-docker exec -it kawa-db mysql -uwolat -ppassword
+docker exec -it kawa-db mysql -u<db_user> -p<db_user_password>
 
-mysql> USE <database_name>;
+mysql> USE <db_name>;
 ```
+
+Close containers with `docker compose down`
+
+## Contributing
+
+Fill free to change content of any file depends on your needs. [PRs](https://github.com/czernika/wp-docker-dev/pulls) and [Issues](https://github.com/czernika/wp-docker-dev/issues) are welcome
 
 ## TODO
 
-- Add MailHog support
-- Add Yarn?
+- [ ] Add MailHog support
+- [ ] Add Yarn?
 
 ## License
 
