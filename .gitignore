@@ -1,0 +1,5 @@
+# Installed packages from wp cli utiltity
+.wp-cli
+
+# Generated on a first run password for admin user
+admin-pass.txt
