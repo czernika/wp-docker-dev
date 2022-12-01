@@ -15,9 +15,18 @@ services:
       - 80:80
     environment:
       WP_CLI_PACKAGES_DIR: /var/www/html/.wp-cli/packages
-      APP_URL: ${WP_HOME}
-      APP_ADMIN_USER: 'wolat'
-      APP_ADMIN_EMAIL: 'wolat@example.com'
+      WP_CLI_CACHE_DIR: /var/www/html/.wp-cli/cache
+      APP_ADMIN_USER: ${APP_ADMIN_USER}
+      APP_ADMIN_EMAIL: ${APP_ADMIN_EMAIL}
+      APP_URL: ${APP_URL:-http://127.0.0.1}
+      APP_LOCALE: ${APP_LOCALE:-en_US}
+      APP_TITLE: ${APP_TITLE:-WordPress}
+      APP_CORE_DIR: ${APP_CORE_DIR:-wordpress}
+      DB_NAME: ${DB_NAME:-wolat}
+      DB_USER: ${DB_USER:-wolat}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_PREFIX: ${DB_PREFIX:-wp_}
+      IS_BEDROCK: 1
     depends_on:
       mysql:
         condition: service_healthy
@@ -32,11 +41,11 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-password}
       MYSQL_ROOT_HOST: '127.0.0.1'
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME:-wolat}
+      MYSQL_USER: ${DB_USER:-wolat}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
