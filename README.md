@@ -1,6 +1,6 @@
 # WordPress Local Development Docker Environment
 
-**Docker environment for local WordPress development (supports [Bedrock](https://docs.roots.io/bedrock/master/installation/) configuration)**
+Docker environment for local WordPress development (supports [Bedrock](https://docs.roots.io/bedrock/master/installation/) configuration)
 
 ## Introduction
 
@@ -8,9 +8,11 @@ This package provides simple Docker compose environment for **WordPress local de
 
 It uses built-in PHP web server and MySQL connection with no fancy configs yet still customizable. This is why we're not recommending this package in production - any other web-server provides much more options. However in a development process most of the time all you need is to run simple working server
 
-By default it install WordPress core into `wordpress` directory but you may provide any custom directory plus you may specify you want to install Bedrock configuration
+By default it install WordPress core into `wordpress` directory but you may provide any custom directory plus you may specify if you want to install Bedrock configuration
 
 ## Installation
+
+> This package requires [Docker](https://www.docker.com/) installed on your local machine
 
 Just clone this repository
 
@@ -18,7 +20,7 @@ Just clone this repository
 git clone git@github.com:czernika/wp-docker-dev.git <project>
 ```
 
-Change some required variables in a `.env` file and run command
+Set required variables in a `.env` file and run command
 
 ```sh
 docker compose up -d
@@ -26,7 +28,7 @@ docker compose up -d
 
 ## Content
 
-This package will install for you
+This package comes with
 
 - [WP-Cli](https://wp-cli.org/)
 - PHP 8.0
@@ -57,11 +59,11 @@ Note: no need to specify database host - it will be set as `kawa-db` by default 
 
 ### WordPress settings
 
-Within `docker-compose.yml` in `environment` section you may note some other variables like `WP_CLI_PACKAGES_DIR` and `WP_CLI_CACHE_DIR` variables with predefined value - they set WP-Cli packages directories where all [packages will be installed](https://make.wordpress.org/cli/handbook/guides/sharing-wp-cli-packages/#wp_cli_packages_dir-environment-variable). It allows you to keep wp cli packages persistent and not to loose them on a next run
+Within `docker-compose.yml` in `environment` section you may note some other variables like `WP_CLI_PACKAGES_DIR` and `WP_CLI_CACHE_DIR` with predefined values - they set WP-Cli directories where all [packages will be installed](https://make.wordpress.org/cli/handbook/guides/sharing-wp-cli-packages/#wp_cli_packages_dir-environment-variable). It allows you to keep wp cli packages persistent and not to loose them on a next run
 
-There is also on setting - `IS_BEDROCK` - set 0 if you wish to install regular WordPress or 1 if you prefer to use Bedrock configuration
+There is also one setting - `IS_BEDROCK` - set `0` if you wish to install regular WordPress or `1` if you prefer to use Bedrock configuration
 
-On a first run database named `DB_NAME` will be created and WordPress core installed - so just open your browser at `APP_URL` or `http://127.0.0.1`, login and enjoy
+On a first run database named `DB_NAME` will be created and WordPress core installed - so just open your browser at `APP_URL` or `http://127.0.0.1`, log in and enjoy
 
 ## Usage
 
@@ -96,9 +98,6 @@ Fill free to change content of any file depends on your needs. [PRs](https://git
 ## TODO (Things to consider)
 
 - Add MailHog support
-- Add Yarn?
-- Maybe switch to PHP-FRM + Nginx?
-- mkcert (HTTPS support) - requires extra dependencies though?
 
 ## License
 
