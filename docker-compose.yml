@@ -25,7 +25,7 @@ services:
       DB_USER: ${DB_USER:-wolat}
       DB_PASSWORD: ${DB_PASSWORD:-password}
       DB_PREFIX: ${DB_PREFIX:-wp_}
-      IS_BEDROCK: 1
+      IS_BEDROCK: 0
     depends_on:
       mysql:
         condition: service_healthy
