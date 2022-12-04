@@ -7,7 +7,6 @@ APP_WEB_CORE_PATH=$APP_CORE_PATH
 APP_WP_CORE_PATH=$APP_CORE_PATH
 
 ADMIN_PASS_FILE="$WORKDIR/admin-pass.txt"
-KEEP_FILE=".gitkeep"
 
 function is_bedrock()
 {
@@ -18,6 +17,24 @@ function wp_core_is_installed()
 {
     $(wp core is-installed --path=$APP_WP_CORE_PATH)
 }
+
+function empty_installation_dir()
+{
+    rm -r $WORKDIR/{.[!.]*,*}
+}
+
+function replace_env()
+{
+    sed -i "s/database_name/$DB_NAME/g" $ENV_FILE
+    sed -i "s/database_user/$DB_USER/g" $ENV_FILE
+    sed -i "s/database_password/$DB_PASSWORD/g" $ENV_FILE
+
+    sed -i "s/# DB_HOST='localhost'/DB_HOST='kawa-db'/g" $ENV_FILE
+    sed -i "s/# DB_PREFIX='wp_'/DB_PREFIX='$DB_PREFIX'/g" $ENV_FILE
+
+    sed -i "s#http://example.com#$APP_URL#g" $ENV_FILE
+}
+
 
 # If this is Bedrock installation
 # Point web server into `web` subdirectory
@@ -48,25 +65,25 @@ if ! wp_core_is_installed; then
         ENV_FILE="$APP_CORE_PATH/.env"
 
         # Empty directory before first run
-        if [ -f $KEEP_FILE ]; then
-            rm $KEEP_FILE
-        fi
+        empty_installation_dir
 
         composer create-project roots/bedrock . --prefer-dist
 
-        if [ -f $ENV_FILE ]; then
-            sed -i "s/database_name/$DB_NAME/g" $ENV_FILE
-            sed -i "s/database_user/$DB_USER/g" $ENV_FILE
-            sed -i "s/database_password/$DB_PASSWORD/g" $ENV_FILE
+        # Composer.json not found - probably some error during installation
+        if [ ! -f $APP_CORE_PATH/composer.json ]; then
+            echo "Reverting installation..."
+            empty_installation_dir
 
-            sed -i "s/# DB_HOST='localhost'/DB_HOST='kawa-db'/g" $ENV_FILE
-            sed -i "s/# DB_PREFIX='wp_'/DB_PREFIX='$DB_PREFIX'/g" $ENV_FILE
-
-            sed -i "s#http://example.com#$APP_URL#g" $ENV_FILE
-        else
-            echo "$ENV_FILE file not found"
             exit 1
         fi
+
+        if [ ! -f $ENV_FILE ]; then
+            echo "$ENV_FILE file not found"
+
+            cp $APP_CORE_PATH/.env.example $ENV_FILE
+        fi
+
+        replace_env
 
         if [[ ! ($APP_LOCALE == "en_US") ]]; then
             wp language core install $APP_LOCALE --path=$APP_WP_CORE_PATH --activate
@@ -81,7 +98,7 @@ if ! wp_core_is_installed; then
     PASSWORD=$(tr -dc 'A-Za-z0-9!#$%&()*+-<=>?@^_|~' </dev/urandom | head -c 16)
 
     echo "Generated admin password is: $PASSWORD"
-    echo "Check generated 'admin-pass.txt' file with generated password"
+    echo "Check 'admin-pass.txt' file with generated password"
 
     echo "Installing WordPress..."
     wp core install --path=$APP_WP_CORE_PATH --url=$APP_URL --title="$APP_TITLE" --admin_user=$APP_ADMIN_USER --admin_password=$PASSWORD --admin_email=$APP_ADMIN_EMAIL --skip-email 
@@ -90,6 +107,7 @@ cat > $ADMIN_PASS_FILE<< EOF
 # Generated password is:
 # Please save this password somewhere else or change it and delete this file after
 # DO NOT deploy this file on production server
+
 $PASSWORD
 EOF
 
