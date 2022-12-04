@@ -95,10 +95,6 @@ Close containers with `docker compose down`
 
 Fill free to change content of any file depends on your needs. [PRs](https://github.com/czernika/wp-docker-dev/pulls) and [Issues](https://github.com/czernika/wp-docker-dev/issues) are welcome
 
-## TODO (Things to consider)
-
-- Add MailHog support
-
 ## License
 
 Open-source under [MIT license](LICENSE.md)

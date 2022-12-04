@@ -57,6 +57,15 @@ services:
       - bedrock
     restart: always
 
+  mailhog:
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025
+    networks:
+      - bedrock
+
 networks:
   bedrock:
 
