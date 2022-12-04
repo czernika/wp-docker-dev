@@ -1,8 +1,11 @@
 #!/bin/bash
 
-WORKDIR=/var/www/html
+WORKDIR=$(pwd)
 
-APP_CORE_PATH="$WORKDIR"
+# Duplicating variable values as there are plans to separate them
+APP_CORE_PATH=$WORKDIR
+
+# For Bedrock these values will be rewritten
 APP_WEB_CORE_PATH=$APP_CORE_PATH
 APP_WP_CORE_PATH=$APP_CORE_PATH
 
@@ -98,7 +101,7 @@ if ! wp_core_is_installed; then
     PASSWORD=$(tr -dc 'A-Za-z0-9!#$%&()*+-<=>?@^_|~' </dev/urandom | head -c 16)
 
     echo "Generated admin password is: $PASSWORD"
-    echo "Check 'admin-pass.txt' file with generated password"
+    echo "Check $ADMIN_PASS_FILE file with generated password"
 
     echo "Installing WordPress..."
     wp core install --path=$APP_WP_CORE_PATH --url=$APP_URL --title="$APP_TITLE" --admin_user=$APP_ADMIN_USER --admin_password=$PASSWORD --admin_email=$APP_ADMIN_EMAIL --skip-email 
