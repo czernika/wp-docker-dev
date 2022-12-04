@@ -8,7 +8,7 @@ This package provides simple Docker compose environment for **WordPress local de
 
 It uses built-in PHP web server and MySQL connection with no fancy configs yet still customizable. This is why we're not recommending this package in production - any other web-server provides much more options. However in a development process most of the time all you need is to run simple working server
 
-By default it install WordPress core into `wordpress` directory but you may provide any custom directory plus you may specify if you want to install Bedrock configuration
+WordPress core will be installed within `wordpress` directory
 
 ## Installation
 

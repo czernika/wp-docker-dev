@@ -3,4 +3,5 @@
 
 # Generated on a first run password for admin user
 admin-pass.txt
-wordpress
+wordpress/*
+!wordpress/.gitkeep
