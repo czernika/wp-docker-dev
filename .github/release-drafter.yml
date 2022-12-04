@@ -5,7 +5,7 @@ template: |
 
   $CHANGES
 
-change-template: '- $TITLE ([#$NUMBER](https://github.com/$OWNER/$REPOSITORY/pull/$NUMBER))'
+change-template: '- $TITLE ([#$NUMBER](https://github.com/$OWNER/$REPOSITORY/pull/$NUMBER)) by @$AUTHOR'
 
 categories:
   - title: '🚀 Features'
