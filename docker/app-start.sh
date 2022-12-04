@@ -2,7 +2,7 @@
 
 WORKDIR=/var/www/html
 
-APP_CORE_PATH="$WORKDIR/$APP_CORE_DIR"
+APP_CORE_PATH="$WORKDIR"
 APP_WEB_CORE_PATH=$APP_CORE_PATH
 APP_WP_CORE_PATH=$APP_CORE_PATH
 
@@ -17,10 +17,6 @@ function wp_core_is_installed()
 {
     $(wp core is-installed --path=$APP_WP_CORE_PATH)
 }
-
-if [[ ! -d $APP_CORE_PATH ]]; then
-    mkdir $APP_CORE_PATH
-fi
 
 # If this is Bedrock installation
 # Point web server into `web` subdirectory
@@ -47,7 +43,9 @@ if ! wp_core_is_installed; then
 
     # Download WordPress Core depends on environemnt
     if is_bedrock; then
-        composer create-project roots/bedrock $APP_CORE_DIR --prefer-dist
+
+        rm -rf .gitkeep
+        composer create-project roots/bedrock . --prefer-dist
 
         sed -i "s/database_name/$DB_NAME/g" $APP_CORE_PATH/.env
         sed -i "s/database_user/$DB_USER/g" $APP_CORE_PATH/.env
