@@ -1,5 +1,11 @@
 # Release Notes
 
+## v1.1.3 - 2022-12-04
+
+### Changes
+
+- Refactor installation script ([#4](https://github.com/czernika/wp-docker-dev/pull/4)) by @czernika
+
 ## v1.1.2 - 2022-12-04
 
 ### Changes
