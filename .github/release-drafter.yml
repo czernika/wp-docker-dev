@@ -4,6 +4,9 @@ template: |
   ## Changes
 
   $CHANGES
+
+change-template: '- $TITLE ([#$NUMBER](https://github.com/$OWNER/$REPOSITORY/pull/$NUMBER))'
+
 categories:
   - title: '🚀 Features'
     labels:
