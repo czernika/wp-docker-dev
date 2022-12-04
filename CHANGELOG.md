@@ -1,5 +1,11 @@
 # Release Notes
 
+## v1.1.2 - 2022-12-04
+
+### Changes
+
+- Remove MailHog configuration ([#3](https://github.com/czernika/wp-docker-dev/pull/3)) by @czernika
+
 ## v1.1.1 - 2022-12-04
 
 ### Changes
