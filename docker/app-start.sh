@@ -7,6 +7,7 @@ APP_WEB_CORE_PATH=$APP_CORE_PATH
 APP_WP_CORE_PATH=$APP_CORE_PATH
 
 ADMIN_PASS_FILE="$WORKDIR/admin-pass.txt"
+KEEP_FILE=".gitkeep"
 
 function is_bedrock()
 {
@@ -44,17 +45,28 @@ if ! wp_core_is_installed; then
     # Download WordPress Core depends on environemnt
     if is_bedrock; then
 
-        rm -rf .gitkeep
+        ENV_FILE="$APP_CORE_PATH/.env"
+
+        # Empty directory before first run
+        if [ -f $KEEP_FILE ]; then
+            rm $KEEP_FILE
+        fi
+
         composer create-project roots/bedrock . --prefer-dist
 
-        sed -i "s/database_name/$DB_NAME/g" $APP_CORE_PATH/.env
-        sed -i "s/database_user/$DB_USER/g" $APP_CORE_PATH/.env
-        sed -i "s/database_password/$DB_PASSWORD/g" $APP_CORE_PATH/.env
+        if [ -f $ENV_FILE ]; then
+            sed -i "s/database_name/$DB_NAME/g" $ENV_FILE
+            sed -i "s/database_user/$DB_USER/g" $ENV_FILE
+            sed -i "s/database_password/$DB_PASSWORD/g" $ENV_FILE
 
-        sed -i "s/# DB_HOST='localhost'/DB_HOST='kawa-db'/g" $APP_CORE_PATH/.env
-        sed -i "s/# DB_PREFIX='wp_'/DB_PREFIX='$DB_PREFIX'/g" $APP_CORE_PATH/.env
+            sed -i "s/# DB_HOST='localhost'/DB_HOST='kawa-db'/g" $ENV_FILE
+            sed -i "s/# DB_PREFIX='wp_'/DB_PREFIX='$DB_PREFIX'/g" $ENV_FILE
 
-        sed -i "s#http://example.com#$APP_URL#g" $APP_CORE_PATH/.env
+            sed -i "s#http://example.com#$APP_URL#g" $ENV_FILE
+        else
+            echo "$ENV_FILE file not found"
+            exit 1
+        fi
 
         if [[ ! ($APP_LOCALE == "en_US") ]]; then
             wp language core install $APP_LOCALE --path=$APP_WP_CORE_PATH --activate
