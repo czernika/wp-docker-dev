@@ -5,6 +5,8 @@ template: |
 
   $CHANGES
 
+  **Full Changelog**: https://github.com/czernika/wp-docker-dev/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+
 change-template: '- $TITLE ([#$NUMBER](https://github.com/czernika/wp-docker-dev/pull/$NUMBER)) by @$AUTHOR'
 
 categories:
